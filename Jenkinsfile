@@ -40,10 +40,12 @@ pipeline {
 			}
 		}
 		stage ('Build Docker Image') {
-			script {
-				dockerImage = docker.build("rajmodulla/hello-world-python:${env.BUILD_TAG}")
-			}
-		}
+			steps {
+			    script {
+				    dockerImage = docker.build("rajmodulla/hello-world-python:${env.BUILD_TAG}")
+			    }
+		    }
+		}	
 		stage ('Push Docker Image') {
 			steps {
 				script{
