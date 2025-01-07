@@ -26,12 +26,32 @@ pipeline {
 		}
 	    stage ('Test') {
 			steps {
-				sh "mvn Test"
+				sh "mvn test"
 			}
 		}
 		stage ('Integrattion Test') {
 			steps {
 				sh "mvn failsafe:integraion-test failsafe:verify"
+			}
+		}
+		stage ('package') {
+			steps {
+				sh "mvn package -DskipTests"
+			}
+		}
+		stage ('Build Docker Image') {
+			script {
+				dockerImage = docker.build("rajmodulla/hello-world-python:${env.BUILD_TAG}")
+			}
+		}
+		stage ('Push Docker Image') {
+			steps {
+				script{
+					docker.withRegistry('','dockerhub') {
+						dockerImage.push();
+						dockerImage.push('latest');
+					}
+				}
 			}
 		}
 	}
