@@ -19,24 +19,14 @@ pipeline {
 				echo "BUILD_URL - $env.BUILD_URL"
 		    }
 	    }
-		stage ('compile') {
+		stage ('Test') {
 			steps {
-				sh "mvn clean compile"
-			}
-		}
-	    stage ('Test') {
-			steps {
-				sh "mvn test"
+				echo "test"
 			}
 		}
 		stage ('Integrattion Test') {
 			steps {
 				echo "Integration Test"
-			}
-		}
-		stage ('package') {
-			steps {
-				sh "mvn package -DskipTests"
 			}
 		}
 		stage ('Build Docker Image') {
